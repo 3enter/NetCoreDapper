@@ -10,5 +10,6 @@ namespace NetCoreDapper.Respository.Interfaces
     {
         Task<Room> GetByID(int id);
         Task<List<Room>> GetRoom(Room filter);
+        Task<int> CreateRoom(Room room);
     }
 }

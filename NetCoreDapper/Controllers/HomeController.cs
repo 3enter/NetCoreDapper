@@ -32,6 +32,18 @@ namespace NetCoreDapper.Controllers
            
             return View( await _roomRepository.GetRoom(room));
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Room room)
+        {
+            var result = await _roomRepository.CreateRoom(room);
+            return RedirectToAction("Index");
+        }
         public IActionResult Privacy()
         {
             return View();

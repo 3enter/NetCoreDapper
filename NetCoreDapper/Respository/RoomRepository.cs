@@ -28,6 +28,20 @@ namespace NetCoreDapper.Respository
                 return new SqlConnection(_connectionString);
             }
         }
+
+        public async Task<int> CreateRoom(Room room)
+        {
+            var q = new Query(nameof(Room)).AsInsert(new  { Name = room.Name,StartDate = room.StartDate,EndDate = room.EndDate});
+            var query = new SqlServerCompiler().Compile(q);
+            var xsdd = query.ToString();
+            using (IDbConnection conn = Connection)
+            {
+                var result = await conn.ExecuteAsync(query.Sql, query.NamedBindings.ToArray());
+                return result;
+            }
+
+        }
+
         public async Task<Room> GetByID(int id)
         {
 
