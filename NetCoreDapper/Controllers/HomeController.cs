@@ -5,14 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreDapper.Models;
+using NetCoreDapper.Respository.Interfaces;
 
 namespace NetCoreDapper.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+
+        private readonly IRoomRepository _roomRepository;
+
+        public HomeController(IRoomRepository roomRepo)
         {
-            return View();
+            _roomRepository = roomRepo;
+
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+            return View(await _roomRepository.GetRoom(null));
         }
 
         public IActionResult Privacy()

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetCoreDapper.Respository;
+using NetCoreDapper.Respository.Interfaces;
 
 namespace NetCoreDapper
 {
@@ -31,6 +33,7 @@ namespace NetCoreDapper
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddScoped<IRoomRepository, RoomRepository>(p=> new RoomRepository(Configuration.GetConnectionString("WebApplication1Context")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
