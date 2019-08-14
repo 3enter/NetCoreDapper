@@ -29,6 +29,7 @@ namespace NetCoreDapper.Respository
                 return new SqlConnection(_connectionString);
             }
         }
+
         public async Task<int> Create(Room room)
         {
             var q = new Query(nameof(Room)).AsInsert(new { Name = room.Name, StartDate = room.StartDate, EndDate = room.EndDate });
@@ -40,6 +41,21 @@ namespace NetCoreDapper.Respository
             }
 
         }
+        public async Task<int> CreateProcedure(Room room)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@Name", room.Name);
+            dynamicParameters.Add("@StartDate", room.StartDate);
+            dynamicParameters.Add("@EndDate", room.EndDate);
+            using (IDbConnection conn = Connection)
+            {
+                var result = await conn.ExecuteAsync("InsertRoom",dynamicParameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+
+        }
+
         public async Task<Room> GetByID(int id)
         {
 
@@ -76,6 +92,25 @@ namespace NetCoreDapper.Respository
                 return result;
             }
         }
+
+        public async Task<IEnumerable<Room>> GetProcedure(Room filter)
+        {
+
+            DynamicParameters dynamicParameters = new DynamicParameters();
+
+                dynamicParameters.Add("@ID", filter?.Id>0? filter?.Id: null);
+                dynamicParameters.Add("@Name", filter?.Name);
+                dynamicParameters.Add("@StartDate", filter?.StartDate>DateTime.MinValue ? filter?.StartDate : null);
+                dynamicParameters.Add("@EndDate", filter?.EndDate);
+            
+            using (IDbConnection conn = Connection)
+            {
+                var result = await conn.QueryAsync<Room>("SearchRoom", dynamicParameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+
+            
+        }
         public async Task<Room> Update(Room room)
         {
 
@@ -87,6 +122,19 @@ namespace NetCoreDapper.Respository
                 return room;
             }
 
+        }
+        public async Task<Room> UpdateProcedure(Room room)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ID", room.Id);
+            dynamicParameters.Add("@Name", room.Name);
+            dynamicParameters.Add("@StartDate", room.StartDate);
+            dynamicParameters.Add("@EndDate", room.EndDate);
+            using (IDbConnection conn = Connection)
+            {
+                var result = await conn.ExecuteAsync("UpdateRoom", dynamicParameters, commandType: CommandType.StoredProcedure);
+                return room;
+            }
         }
 
         public async Task<int> Delete(int id)
@@ -100,6 +148,19 @@ namespace NetCoreDapper.Respository
             }
         }
 
+        public async Task<int> DeleteProcedure(int id)
+        {
+
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ID", id);
+
+            using (IDbConnection conn = Connection)
+            {
+                var result = await conn.ExecuteAsync("DeleteRoom", dynamicParameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+
+        }
         public async Task<IEnumerable<Allocation>> GetAllocations()
         {
             var allocationDictionary = new Dictionary<long, Allocation>();
@@ -125,5 +186,6 @@ namespace NetCoreDapper.Respository
                 return result.Distinct();
             }
         }
+
     }
 }

@@ -22,14 +22,18 @@ namespace NetCoreDapper.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _roomRepository.Get(null));
+            //return View(await _roomRepository.Get(null));
+            return View(await _roomRepository.GetProcedure(null));
+
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(Room room)
         {
            
-            return View( await _roomRepository.Get(room));
+           // return View( await _roomRepository.Get(room));
+            return View(await _roomRepository.GetProcedure(room));
+
         }
 
         public IActionResult Create()
@@ -40,7 +44,9 @@ namespace NetCoreDapper.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Room room)
         {
-            var result = await _roomRepository.Create(room);
+            //var result = await _roomRepository.Create(room);
+            var result = await _roomRepository.CreateProcedure(room);
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -70,7 +76,8 @@ namespace NetCoreDapper.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await _roomRepository.Update(room);
+                //  var result = await _roomRepository.Update(room);
+                var result = await _roomRepository.UpdateProcedure(room);
                 return RedirectToAction(nameof(Index));
 
             }
@@ -100,7 +107,8 @@ namespace NetCoreDapper.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var result = await _roomRepository.Delete(id);
+            // var result = await _roomRepository.Delete(id);
+            var result = await _roomRepository.DeleteProcedure(id);
             return RedirectToAction(nameof(Index));
         }
 
