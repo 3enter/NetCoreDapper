@@ -22,14 +22,14 @@ namespace NetCoreDapper.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _roomRepository.GetRoom(null));
+            return View(await _roomRepository.Get(null));
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(Room room)
         {
            
-            return View( await _roomRepository.GetRoom(room));
+            return View( await _roomRepository.Get(room));
         }
 
         public IActionResult Create()

@@ -53,7 +53,7 @@ namespace NetCoreDapper.Respository
             }
 
         }
-        public async Task<IEnumerable<Student>> GetRoom(Student filter)
+        public async Task<IEnumerable<Student>> Get(Student filter)
         {
             var q = new Query(nameof(Student));
             if (filter != null)

@@ -13,17 +13,22 @@ namespace NetCoreDapper.Controllers
     {
         private readonly IStudentRepository _studentRepository;
 
+        public StudentController(IStudentRepository studentRepo)
+        {
+            _studentRepository = studentRepo;
+        }
+
         // GET: Student
         public async Task<IActionResult> Index()
         {
-            return View(await _studentRepository.GetRoom(null));
+            return View(await _studentRepository.Get(null));
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(Student room)
         {
 
-            return View(await _studentRepository.GetRoom(room));
+            return View(await _studentRepository.Get(room));
         }
 
         // GET: Student/Create

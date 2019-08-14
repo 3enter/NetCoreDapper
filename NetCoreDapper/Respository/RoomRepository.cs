@@ -54,7 +54,7 @@ namespace NetCoreDapper.Respository
             }
 
         }
-        public async Task<IEnumerable<Room>> GetRoom(Room filter)
+        public async Task<IEnumerable<Room>> Get(Room filter)
         {
             var q = new Query(nameof(Room));
             if (filter != null)

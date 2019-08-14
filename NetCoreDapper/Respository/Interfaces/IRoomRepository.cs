@@ -9,7 +9,7 @@ namespace NetCoreDapper.Respository.Interfaces
     public interface IRoomRepository
     {
         Task<Room> GetByID(int id);
-        Task<IEnumerable<Room>> GetRoom(Room filter);
+        Task<IEnumerable<Room>> Get(Room filter);
         Task<int> Create(Room room);
 
         Task<Room> Update(Room room);

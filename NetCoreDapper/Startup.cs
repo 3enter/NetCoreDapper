@@ -32,8 +32,9 @@ namespace NetCoreDapper
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            services.AddScoped<IRoomRepository, RoomRepository>(p=> new RoomRepository(Configuration.GetConnectionString("WebApplication1Context")));
+            var Connection = Configuration.GetConnectionString("WebApplication1Context");
+            services.AddScoped<IRoomRepository, RoomRepository>(p=> new RoomRepository(Connection));
+            services.AddScoped<IStudentRepository, StudentRepository>(p => new StudentRepository(Connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

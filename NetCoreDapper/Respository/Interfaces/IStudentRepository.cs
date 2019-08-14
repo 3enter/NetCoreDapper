@@ -12,7 +12,7 @@ namespace NetCoreDapper.Respository.Interfaces
         Task<int> Create(Student student);
         Task<int> Delete(int id);
         Task<Student> GetByID(int id);
-        Task<IEnumerable<Student>> GetRoom(Student filter);
+        Task<IEnumerable<Student>> Get(Student filter);
         Task<Student> Update(Student student);
     }
 }
