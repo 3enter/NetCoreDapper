@@ -14,5 +14,7 @@ namespace NetCoreDapper.Respository.Interfaces
 
         Task<Room> Update(Room room);
         Task<int> Delete(int id);
+         Task<IEnumerable<Allocation>> GetAllocations();
+
     }
 }

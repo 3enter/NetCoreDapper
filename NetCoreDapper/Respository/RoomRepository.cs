@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+
 using NetCoreDapper.Models;
 using NetCoreDapper.Respository.Interfaces;
 using SqlKata;
@@ -96,6 +97,32 @@ namespace NetCoreDapper.Respository
             {
                 var result = await conn.ExecuteAsync(query.Sql, query.NamedBindings);
                 return result;
+            }
+        }
+
+        public async Task<IEnumerable<Allocation>> GetAllocations()
+        {
+            var allocationDictionary = new Dictionary<long, Allocation>();
+
+            var q = new Query(nameof(Room)).Join(nameof(NetCoreDapper.Data.StudentRoom), nameof(Room)+"."+nameof(Room.Id), nameof(Data.StudentRoom.RoomId)).Join(nameof(Student), nameof(Data.StudentRoom.StudentId), nameof(Student) + "." + nameof(Student.Id));
+
+            var query = new SqlServerCompiler().Compile(q);
+            using (IDbConnection conn = Connection)
+            {
+                var result = await conn.QueryAsync<Room, Data.StudentRoom, Student, Allocation>(query.Sql, (room, studentroom, student) =>
+                {
+                    Allocation allocation; 
+
+                    if (!allocationDictionary.TryGetValue(room.Id, out allocation))
+                    {
+                        allocation=  new Allocation { Id = room.Id, EndDate = room.EndDate, Name = room.Name, StartDate = room.StartDate };
+                        allocation.Details = new List<AllocationDetail>();
+                        allocationDictionary.Add(allocation.Id, allocation);
+                    }
+                    allocation.Details.Add(new AllocationDetail { Id = studentroom.Id, RoomId = room.Id, StudentFamily = student.Family, StudentId = student.Id, StudentName = student.Name });
+                    return allocation;
+                }, query.NamedBindings.ToArray());
+                return result.Distinct();
             }
         }
     }
