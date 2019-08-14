@@ -20,7 +20,6 @@ namespace NetCoreDapper.Controllers
 
         }
 
-
         public async Task<IActionResult> Index()
         {
             return View(await _roomRepository.GetRoom(null));
@@ -41,9 +40,72 @@ namespace NetCoreDapper.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Room room)
         {
-            var result = await _roomRepository.CreateRoom(room);
-            return RedirectToAction("Index");
+            var result = await _roomRepository.Create(room);
+            return RedirectToAction(nameof(Index));
         }
+
+        // GET: Home/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var room = await _roomRepository.GetByID(id??0);
+            if (room == null)
+            {
+                return NotFound();
+            }
+            return View(room);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id,Room room)
+        {
+            if (id != room.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var result = await _roomRepository.Update(room);
+                return RedirectToAction(nameof(Index));
+
+            }
+            return View(room);
+        }
+
+
+        // GET: Students/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var room = await _roomRepository.GetByID(id ?? 0);
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            return View(room);
+        }
+
+        // POST: Students/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var result = await _roomRepository.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         public IActionResult Privacy()
         {
             return View();
