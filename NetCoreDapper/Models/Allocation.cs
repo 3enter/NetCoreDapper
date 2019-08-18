@@ -9,7 +9,5 @@ namespace NetCoreDapper.Models
     {
         public AllocationDetail Det { get; }
         public List<AllocationDetail> Details { get; set; }
-
-
     }
 }

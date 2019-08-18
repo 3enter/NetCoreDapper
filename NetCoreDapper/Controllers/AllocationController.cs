@@ -11,11 +11,12 @@ namespace NetCoreDapper.Controllers
     public class AllocationController : Controller
     {
         private readonly IRoomRepository _roomRepository;
+        private readonly IStudentRepository _studentRepository;
 
-
-        public AllocationController(IRoomRepository roomRepo)
+        public AllocationController(IRoomRepository roomRepo, IStudentRepository studentRepo)
         {
             _roomRepository = roomRepo;
+            _studentRepository = studentRepo;
 
         }
 
@@ -32,10 +33,18 @@ namespace NetCoreDapper.Controllers
         }
 
         // GET: Allocation/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Student = await _studentRepository.Get(null);
+            var model = await _roomRepository.GetByID(id ?? 0);
+            return View(model);
         }
+
+
 
         // POST: Allocation/Create
         [HttpPost]

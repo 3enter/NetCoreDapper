@@ -1,4 +1,4 @@
-﻿@model NetCoreDapper.Models.Student
+﻿@model NetCoreDapper.Models.Room
 
 @{
     ViewData["Title"] = "Create";
@@ -6,11 +6,12 @@
 
 <h1>Create</h1>
 
-<h4>Student</h4>
+<h4>Allocation</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+            @{ List<Student> ss = ViewBag.Student;}
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -18,14 +19,14 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Family" class="control-label"></label>
-                <input asp-for="Family" class="form-control" />
-                <span asp-validation-for="Family" class="text-danger"></span>
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
